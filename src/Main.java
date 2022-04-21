@@ -1,15 +1,13 @@
 import javax.swing.*;
-import javax.swing.plaf.IconUIResource;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Main {
 
     static int gecerliSoruIndisi = 0;//Yeni soru alırken kullanmak için globalde tanımladım.
-    static int dogruSayisi = 0,yanlisSayisi = 0;
+    static int dogruSayisi = 0, yanlisSayisi = 0;
 
     public static void main(String[] args) {
         //--------------------------------------------SORULAR-ŞIKLAR-CEVAPLAR----------------------------------------------------
+        //TODO Tüm işlemlerin main de toplanması çok da mantıklı deil. Ben uğraşmak istemesemde bunları ayırabilirsiniz.
         String[] sorular = {
                 "Bir Sebepten Dolayı Tek Kulağına Küpe Takan Osmanlı Padişahı Kimdir?",
                 "Aspirinin Hammaddesi Nedir?",
@@ -63,39 +61,38 @@ public class Main {
         frame.add(sonrakiSoruButonu);
 
         //--------------------Buton Fonksiyonu---------------------------
-        sonrakiSoruButonu.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        sonrakiSoruButonu.addActionListener(e -> {
 
-                if (aSecenegi.isSelected() || bSecenegi.isSelected() || cSecenegi.isSelected() || dSecenegi.isSelected()) {
-                    String secim = null;
-                    if (aSecenegi.isSelected()) secim = "A";
-                    else if (bSecenegi.isSelected()) secim = "B";
-                    else if (cSecenegi.isSelected()) secim = "C";
-                    else if (dSecenegi.isSelected()) secim = "D";
-                    if (secim == dogruCevaplar[gecerliSoruIndisi]) {
+            if (aSecenegi.isSelected() || bSecenegi.isSelected() || cSecenegi.isSelected() || dSecenegi.isSelected()) {
+                String secim = null;
+                if (aSecenegi.isSelected()) secim = "A";
+                else if (bSecenegi.isSelected()) secim = "B";
+                else if (cSecenegi.isSelected()) secim = "C";
+                else if (dSecenegi.isSelected()) secim = "D";
+                if(secim != null) {
+                    if (secim.equals(dogruCevaplar[gecerliSoruIndisi])) {
                         dogruSayisi++;
-                        JOptionPane.showMessageDialog(null, "Doğru Bildin Yuppppppiiiii","İşte Bu",1);
-                    } else if (secim != dogruCevaplar[gecerliSoruIndisi]) {
+                        JOptionPane.showMessageDialog(null, "Doğru Bildin Yuppppppiiiii", "İşte Bu", JOptionPane.INFORMATION_MESSAGE);
+                    } else if (!dogruCevaplar[gecerliSoruIndisi].equals(secim)) {
                         yanlisSayisi++;
-                        JOptionPane.showMessageDialog(null, "Başaramadın ...\nNeyi başaramadım diyosan doğru seçenek "+dogruCevaplar[gecerliSoruIndisi]+" olacaktı. ","Oldumu Şimdi...",0);
+                        JOptionPane.showMessageDialog(null, "Başaramadın ...\nNeyi başaramadım diyosan doğru seçenek " + dogruCevaplar[gecerliSoruIndisi] + " olacaktı. ", "Oldumu Şimdi...", JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                gecerliSoruIndisi++;
-                if(gecerliSoruIndisi == 4){
-                    sonrakiSoruButonu.setText("BİTİR");
-                }
-                else if (gecerliSoruIndisi == 5) {
-                    JOptionPane.showMessageDialog(null, "Oyun Bitti.\nDoğru Sayısı : "+dogruSayisi+"\nYanlış Sayısı : "+yanlisSayisi);
-                    System.exit(0);
-                }
-                soruMetni.setText(sorular[gecerliSoruIndisi]);
-                aSecenegi.setText(secenekler[gecerliSoruIndisi][0]);
-                bSecenegi.setText(secenekler[gecerliSoruIndisi][1]);
-                cSecenegi.setText(secenekler[gecerliSoruIndisi][2]);
-                dSecenegi.setText(secenekler[gecerliSoruIndisi][3]);
-
             }
+            gecerliSoruIndisi++;
+            if (gecerliSoruIndisi == 4) {
+                sonrakiSoruButonu.setText("BİTİR");
+            } else if (gecerliSoruIndisi == 5) {
+                JOptionPane.showMessageDialog(null, "Oyun Bitti.\nDoğru Sayısı : " + dogruSayisi + "\nYanlış Sayısı : " + yanlisSayisi);
+                System.exit(0);
+            }
+            //TODO Ben uğraşmak istemiyorum fakat soru metni çok uzunsa ikiye bölünüp araya "\n" eklenip o şekilde soru metnine verilebilir.
+            soruMetni.setText(sorular[gecerliSoruIndisi]);
+            aSecenegi.setText(secenekler[gecerliSoruIndisi][0]);
+            bSecenegi.setText(secenekler[gecerliSoruIndisi][1]);
+            cSecenegi.setText(secenekler[gecerliSoruIndisi][2]);
+            dSecenegi.setText(secenekler[gecerliSoruIndisi][3]);
+
         });
         frame.setLayout(null);
         frame.setVisible(true);
